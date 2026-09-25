@@ -1,0 +1,951 @@
+<title>Fetify</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..600&family=Work+Sans:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --paper: #F2EEE3;
+    --paper-raised: #FBF9F1;
+    --ink: #1C1A22;
+    --ink-soft: #58515F;
+    --gold: #9C7434;
+    --gold-soft: #C9A567;
+    --berry: #7C2C3B;
+    --sage: #4F5C43;
+    --plum: #5B4368;
+    --line: #DCD2B4;
+    --shadow: rgba(28,26,34,0.14);
+    --focus: #3C6E9C;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper: #17151D;
+      --paper-raised: #211D28;
+      --ink: #EEE8DC;
+      --ink-soft: #B8AFC1;
+      --gold: #CBA76A;
+      --gold-soft: #E0C68E;
+      --berry: #CC7A8B;
+      --sage: #93A481;
+      --plum: #A78AB9;
+      --line: #38333F;
+      --shadow: rgba(0,0,0,0.45);
+      --focus: #7FB3E0;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper: #17151D;
+    --paper-raised: #211D28;
+    --ink: #EEE8DC;
+    --ink-soft: #B8AFC1;
+    --gold: #CBA76A;
+    --gold-soft: #E0C68E;
+    --berry: #CC7A8B;
+    --sage: #93A481;
+    --plum: #A78AB9;
+    --line: #38333F;
+    --shadow: rgba(0,0,0,0.45);
+    --focus: #7FB3E0;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){ html{ scroll-behavior: auto; } }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Work Sans', 'Segoe UI', system-ui, sans-serif;
+    line-height: 1.55;
+    padding-inline: max(20px, calc((100vw - 1100px)/2));
+  }
+
+  .page{ max-width: 1100px; margin: 0 auto; }
+
+  h1, h2, h3{
+    font-family: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', serif;
+    font-weight: 600;
+    text-wrap: balance;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  a{ color: inherit; }
+  img{ max-width: 100%; }
+
+  :focus-visible{
+    outline: 2.5px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .eyebrow{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ---------- nav ---------- */
+  .nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-block: 22px;
+  }
+  .brand{
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  .nav-links{
+    display: flex;
+    gap: 28px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: 0.92rem;
+  }
+  .nav-links a{ text-decoration: none; color: var(--ink-soft); }
+  .nav-links a:hover{ color: var(--ink); }
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.92rem;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    padding: 12px 22px;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn-primary{ background: var(--ink); color: var(--paper); }
+  .btn-primary:hover{ background: var(--berry); }
+  .btn-ghost{ background: transparent; border-color: var(--ink); color: var(--ink); }
+  .btn-ghost:hover{ border-color: var(--berry); color: var(--berry); }
+  .btn-block{ width: 100%; justify-content: center; }
+
+  @media (max-width: 640px){
+    .nav-links{ display: none; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero{
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+    padding-block: 40px 64px;
+    border-bottom: 1px solid var(--line);
+  }
+  .hero h1{
+    font-size: clamp(2.6rem, 3.4vw + 1.6rem, 4.6rem);
+    line-height: 0.98;
+    margin-block: 10px 18px;
+  }
+  .hero p.lede{
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    max-width: 46ch;
+    margin-bottom: 28px;
+  }
+  .hero-ctas{
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+
+  .invite{
+    position: relative;
+    justify-self: center;
+    width: min(340px, 100%);
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    padding: 34px 30px;
+    box-shadow: 0 22px 40px -20px var(--shadow);
+    transform: rotate(-2.5deg);
+    font-family: 'Fraunces', serif;
+  }
+  .invite::before{
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid var(--gold-soft);
+    border-radius: 1px;
+    pointer-events: none;
+  }
+  .invite .seal{
+    position: absolute;
+    top: -20px;
+    right: 26px;
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 32% 28%, var(--gold-soft), var(--gold) 70%);
+    color: var(--paper-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-style: italic;
+    box-shadow: 0 6px 14px -6px var(--shadow);
+  }
+  .invite .kicker{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+  }
+  .invite .title{
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 18px;
+  }
+  .invite .matches{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Work Sans', sans-serif;
+  }
+  .match-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.86rem;
+    border-top: 1px dashed var(--line);
+    padding-top: 10px;
+  }
+  .match-row span:first-child{ color: var(--ink); font-weight: 500; }
+  .match-row span:last-child{ color: var(--gold); font-size: 0.74rem; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  @media (max-width: 780px){
+    .hero{ grid-template-columns: 1fr; }
+    .invite{ transform: none; justify-self: start; }
+  }
+
+  /* ---------- sections ---------- */
+  section{ padding-block: 64px; }
+  section.tight{ padding-block: 48px; }
+  .section-head{ max-width: 60ch; margin-bottom: 40px; }
+  .section-head h2{ font-size: clamp(1.7rem, 1.1vw + 1.4rem, 2.3rem); margin-top: 8px; }
+  .section-head p{ color: var(--ink-soft); margin-top: 12px; }
+
+  /* ---------- categories ---------- */
+  .categories{ border-top: 1px solid var(--line); }
+  .cat-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .cat-card{
+    background: var(--paper-raised);
+    padding: 28px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cat-card svg{ width: 38px; height: 38px; }
+  .cat-card h3{ font-size: 1.2rem; font-weight: 600; }
+  .cat-card .chips{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 8px;
+  }
+  .chip{
+    font-size: 0.72rem;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .cat-card p{ color: var(--ink-soft); font-size: 0.92rem; margin: 0; }
+  .cat-mariage svg{ color: var(--berry); }
+  .cat-bapteme svg{ color: var(--sage); }
+  .cat-anniversaire svg{ color: var(--gold); }
+  .cat-soiree svg{ color: var(--plum); }
+
+  /* ---------- how it works ---------- */
+  .how{ border-top: 1px solid var(--line); }
+  .steps{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .step{ display: flex; flex-direction: column; gap: 10px; }
+  .step .num{
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 2.1rem;
+    color: var(--gold-soft);
+    line-height: 1;
+  }
+  .step h3{ font-size: 1.1rem; font-weight: 600; }
+  .step p{ color: var(--ink-soft); margin: 0; font-size: 0.95rem; }
+  @media (max-width: 720px){ .steps{ grid-template-columns: 1fr; gap: 28px; } }
+
+  /* ---------- audiences ---------- */
+  .audiences{ border-top: 1px solid var(--line); }
+  .aud-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .aud-card{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .aud-card .eyebrow{ margin-bottom: -6px; }
+  .aud-card ul{ margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .aud-card li{ font-size: 0.94rem; color: var(--ink-soft); padding-left: 18px; position: relative; }
+  .aud-card li::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 7px;
+    height: 1px;
+    background: var(--gold);
+  }
+  @media (max-width: 720px){ .aud-grid{ grid-template-columns: 1fr; } }
+
+  /* ---------- directory ---------- */
+  .directory{ border-top: 1px solid var(--line); }
+  .dir-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+  }
+  .dir-card{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .dir-top{ display: flex; align-items: center; gap: 14px; }
+  .dir-avatar{
+    flex: none;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--paper-raised);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+  }
+  .dir-name{ font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 600; }
+  .dir-job{ font-size: 0.82rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; }
+  .dir-tags{ display: flex; flex-wrap: wrap; gap: 6px; }
+  .dir-city{ font-size: 0.86rem; color: var(--ink-soft); margin: 0; }
+  .badge-featured{
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+    font-weight: 600;
+  }
+  .directory-note{ color: var(--ink-soft); font-size: 0.88rem; margin-top: 28px; }
+
+  /* ---------- signup ---------- */
+  .signup{ border-top: 1px solid var(--line); }
+  .signup-card{
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    padding: 40px;
+    max-width: 620px;
+    margin: 0 auto;
+  }
+  .tabs{
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 28px;
+  }
+  .tab{
+    flex: 1;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 10px 6px 14px;
+    cursor: pointer;
+  }
+  .tab[aria-selected="true"]{ color: var(--ink); border-bottom-color: var(--berry); }
+  .field-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+  .field label{ font-size: 0.8rem; font-weight: 500; color: var(--ink-soft); }
+  .field input, .field select{
+    font-family: 'Work Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .field input:focus, .field select:focus{ border-color: var(--gold); }
+  .field-events{ border: none; padding: 0; margin: 0 0 16px; }
+  .field-events legend{ font-size: 0.8rem; font-weight: 500; color: var(--ink-soft); padding: 0; margin-bottom: 8px; }
+  .field-hint{ font-weight: 400; text-transform: none; letter-spacing: 0; }
+  .checks{ display: flex; flex-wrap: wrap; gap: 10px 18px; }
+  .check{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.88rem;
+    color: var(--ink);
+    cursor: pointer;
+  }
+  .check input{ accent-color: var(--berry); width: 15px; height: 15px; }
+  .field-note{ font-size: 0.78rem; color: var(--ink-soft); margin: 6px 0 0; }
+  .form-status{ min-height: 1.4em; font-size: 0.88rem; margin-top: 14px; color: var(--ink-soft); }
+  .form-status a{ color: var(--berry); }
+  .thanks{ font-family: 'Fraunces', serif; font-style: italic; font-size: 1.25rem; }
+  @media (max-width: 560px){ .field-row{ grid-template-columns: 1fr; } .signup-card{ padding: 28px 22px; } }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top: 1px solid var(--line);
+    padding-block: 32px 44px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  footer .brand{ font-size: 1.05rem; }
+</style>
+
+<div class="page">
+  <header class="nav">
+    <a class="brand" href="#top">Fetify</a>
+    <ul class="nav-links">
+      <li><a href="#evenements">Événements</a></li>
+      <li><a href="#comment">Comment ça marche</a></li>
+      <li><a href="#pour-qui">Prestataires &amp; organisateurs</a></li>
+      <li><a href="#annuaire">Annuaire</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#inscription">Rejoindre la liste</a>
+  </header>
+
+  <main>
+    <section class="hero" id="top">
+      <div>
+        <p class="eyebrow">On s'occupe du reste</p>
+        <h1>Fetify</h1>
+        <p class="lede">La mise en relation avec les prestataires de vos mariages, baptêmes, anniversaires et soirées entre proches — un seul formulaire, les bons contacts près de chez vous.</p>
+        <div class="hero-ctas">
+          <a class="btn btn-primary" href="#inscription">Je prépare un événement</a>
+          <a class="btn btn-ghost" href="#inscription">Je suis prestataire</a>
+        </div>
+      </div>
+      <div class="invite" aria-hidden="true">
+        <span class="seal">F</span>
+        <p class="kicker">Vos prestataires, sélectionnés</p>
+        <p class="title">Mariage · 12 juin</p>
+        <div class="matches">
+          <div class="match-row"><span>Traiteur — Table &amp; Or</span><span>Disponible</span></div>
+          <div class="match-row"><span>Photographe — L. Moreau</span><span>Disponible</span></div>
+          <div class="match-row"><span>DJ — Nuits Blanches</span><span>Sur devis</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="categories" id="evenements">
+      <div class="section-head">
+        <p class="eyebrow">Pour quel événement</p>
+        <h2>Un format de mise en relation par occasion</h2>
+        <p>Chaque événement a ses codes et ses prestataires. Fetify adapte la sélection au vôtre.</p>
+      </div>
+      <div class="cat-grid">
+        <article class="cat-card cat-mariage">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="21" r="9.5"/><circle cx="24" cy="21" r="9.5"/></svg>
+          <h3>Mariage</h3>
+          <p>Du lieu de réception au dernier détail de la soirée.</p>
+          <div class="chips">
+            <span class="chip">Traiteur</span><span class="chip">Photographe</span><span class="chip">DJ</span><span class="chip">Fleuriste</span><span class="chip">Lieu de réception</span>
+          </div>
+        </article>
+        <article class="cat-card cat-bapteme">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M20 7c5 8 9 12.5 9 17a9 9 0 1 1-18 0c0-4.5 4-9 9-17Z"/></svg>
+          <h3>Baptême &amp; communion</h3>
+          <p>Une cérémonie sobre, une réception à la hauteur du moment.</p>
+          <div class="chips">
+            <span class="chip">Traiteur</span><span class="chip">Photographe</span><span class="chip">Pâtissier</span><span class="chip">Décoration</span>
+          </div>
+        </article>
+        <article class="cat-card cat-anniversaire">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="17" y="16" width="6" height="18" rx="1.5"/><path d="M20 6c2.5 3.5 3.5 5.6 3.5 7.2a3.5 3.5 0 1 1-7 0c0-1.6 1-3.7 3.5-7.2Z"/></svg>
+          <h3>Anniversaire</h3>
+          <p>Des 18 ans aux noces d'or, toutes les échelles de fête.</p>
+          <div class="chips">
+            <span class="chip">Traiteur</span><span class="chip">DJ</span><span class="chip">Décoration</span><span class="chip">Location de salle</span>
+          </div>
+        </article>
+        <article class="cat-card cat-soiree">
+          <svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.6">
+            <g transform="rotate(-18 15 20)"><path d="M10 8h10l-5 9v11M9.5 28.5h11"/></g>
+            <g transform="rotate(18 25 20)"><path d="M20 8h10l-5 9v11M19.5 28.5h11"/></g>
+          </svg>
+          <h3>Soirée entre proches</h3>
+          <p>Entre amis ou en famille, sans rien organiser vous-même.</p>
+          <div class="chips">
+            <span class="chip">Traiteur</span><span class="chip">Bar à cocktails</span><span class="chip">Photobooth</span><span class="chip">Location</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="how" id="comment">
+      <div class="section-head">
+        <p class="eyebrow">Comment ça marche</p>
+        <h2>Trois étapes, aucun appel à froid</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <span class="num">01</span>
+          <h3>Décrivez votre événement</h3>
+          <p>Date, ville, budget et style — deux minutes suffisent.</p>
+        </div>
+        <div class="step">
+          <span class="num">02</span>
+          <h3>Recevez une sélection</h3>
+          <p>Des prestataires disponibles et notés, choisis pour votre demande.</p>
+        </div>
+        <div class="step">
+          <span class="num">03</span>
+          <h3>Comparez et réservez</h3>
+          <p>Échangez directement, comparez les devis, réservez en confiance.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="audiences" id="pour-qui">
+      <div class="section-head">
+        <p class="eyebrow">Pour qui</p>
+        <h2>Deux côtés d'un même carnet</h2>
+      </div>
+      <div class="aud-grid">
+        <div class="aud-card">
+          <p class="eyebrow" style="color:var(--berry)">Organisateurs</p>
+          <h3>Un formulaire, plusieurs devis</h3>
+          <ul>
+            <li>Une seule demande envoyée aux bons prestataires de votre ville</li>
+            <li>Des profils avec avis, photos et disponibilités réelles</li>
+            <li>Aucune démarche imposée : vous choisissez qui recontacter</li>
+          </ul>
+        </div>
+        <div class="aud-card">
+          <p class="eyebrow" style="color:var(--plum)">Prestataires</p>
+          <h3>Des demandes qualifiées, sans démarchage</h3>
+          <ul>
+            <li>Des demandes filtrées par métier, ville et type d'événement</li>
+            <li>Une fiche pour présenter votre travail et vos disponibilités</li>
+            <li>Pas d'abonnement obligatoire pour démarrer</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="directory" id="annuaire">
+      <div class="section-head">
+        <p class="eyebrow">Déjà avec nous</p>
+        <h2>Les premiers noms du carnet</h2>
+        <p>Une sélection validée à la main, pour l'instant en Île-de-France — l'annuaire s'agrandit chaque semaine.</p>
+      </div>
+      <div class="dir-grid">
+        <article class="dir-card">
+          <div class="dir-top">
+            <span class="dir-avatar" style="--accent: var(--sage)">A</span>
+            <div>
+              <p class="dir-name">Axelle</p>
+              <p class="dir-job">Pâtissier</p>
+            </div>
+          </div>
+          <p class="dir-city">Haut-de-Seine · Île-de-France</p>
+          <div class="dir-tags"><span class="chip">Cake design</span></div>
+          <span class="badge-featured">★ Mise en avant</span>
+        </article>
+        <article class="dir-card">
+          <div class="dir-top">
+            <span class="dir-avatar" style="--accent: var(--sage)">E</span>
+            <div>
+              <p class="dir-name">Eline</p>
+              <p class="dir-job">Pâtissier</p>
+            </div>
+          </div>
+          <p class="dir-city">Essonne · Île-de-France</p>
+          <div class="dir-tags"><span class="chip">Mignardises antillaises</span></div>
+        </article>
+        <article class="dir-card">
+          <div class="dir-top">
+            <span class="dir-avatar" style="--accent: var(--plum)">C</span>
+            <div>
+              <p class="dir-name">Camille</p>
+              <p class="dir-job">Bar à cocktails</p>
+            </div>
+          </div>
+          <p class="dir-city">Paris · Île-de-France</p>
+          <div class="dir-tags"><span class="chip">Mixologie</span></div>
+        </article>
+        <article class="dir-card">
+          <div class="dir-top">
+            <span class="dir-avatar" style="--accent: var(--berry)">E</span>
+            <div>
+              <p class="dir-name">Eline Wedding</p>
+              <p class="dir-job">Wedding planner</p>
+            </div>
+          </div>
+          <p class="dir-city">Essonne · Île-de-France</p>
+          <div class="dir-tags"><span class="chip">Organisation</span></div>
+          <span class="badge-featured">★ Mise en avant</span>
+        </article>
+      </div>
+      <p class="directory-note">Prestataire ? <a href="#inscription">Rejoignez le carnet</a> — c'est gratuit pour démarrer.</p>
+    </section>
+
+    <section class="signup" id="inscription">
+      <div class="section-head" style="text-align:center; margin-inline:auto;">
+        <p class="eyebrow">Accès anticipé</p>
+        <h2>Réservez votre place</h2>
+        <p>Fetify ouvre prochainement. Laissez vos coordonnées pour être prévenu·e en priorité.</p>
+      </div>
+
+      <div class="signup-card">
+        <div class="tabs" role="tablist">
+          <button class="tab" id="tab-client" role="tab" aria-selected="true" aria-controls="panel-client">J'organise un événement</button>
+          <button class="tab" id="tab-pro" role="tab" aria-selected="false" aria-controls="panel-pro">Je suis prestataire</button>
+        </div>
+
+        <form id="panel-client" role="tabpanel" aria-labelledby="tab-client">
+          <div class="field-row">
+            <div class="field">
+              <label for="client-first-name">Prénom</label>
+              <input id="client-first-name" name="firstName" type="text" autocomplete="given-name" required>
+            </div>
+            <div class="field">
+              <label for="client-last-name">Nom</label>
+              <input id="client-last-name" name="lastName" type="text" autocomplete="family-name" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="client-email">Email</label>
+              <input id="client-email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="client-phone">Téléphone</label>
+              <input id="client-phone" name="phone" type="tel" autocomplete="tel" placeholder="06 12 34 56 78" required>
+            </div>
+          </div>
+          <p class="field-note">Ces informations nous aident à vous mettre en relation avec les bons prestataires.</p>
+          <div class="field-row">
+            <div class="field">
+              <label for="client-postal">Code postal</label>
+              <input id="client-postal" name="postalCode" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="75001">
+            </div>
+            <div class="field">
+              <label for="client-event">Type d'événement</label>
+              <select id="client-event" name="event">
+                <option>Mariage</option>
+                <option>Baptême / Communion</option>
+                <option>Anniversaire</option>
+                <option>Soirée entre proches</option>
+                <option>Autre</option>
+              </select>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="client-venue">Lieu de l'événement</label>
+              <input id="client-venue" name="venue" type="text" placeholder="Nom du lieu, ville…">
+            </div>
+            <div class="field">
+              <label for="client-guests">Nombre d'invités</label>
+              <input id="client-guests" name="guests" type="number" min="1" step="1" inputmode="numeric">
+            </div>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Rejoindre la liste</button>
+          <p class="form-status" id="status-client" role="status"></p>
+        </form>
+
+        <form id="panel-pro" role="tabpanel" aria-labelledby="tab-pro" hidden>
+          <div class="field-row">
+            <div class="field">
+              <label for="pro-name">Nom commercial</label>
+              <input id="pro-name" name="name" type="text" autocomplete="organization" required>
+            </div>
+            <div class="field">
+              <label for="pro-email">Email</label>
+              <input id="pro-email" name="email" type="email" autocomplete="email" required>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="pro-job">Métier</label>
+              <select id="pro-job" name="job">
+                <option>Traiteur</option>
+                <option>Photographe</option>
+                <option>DJ</option>
+                <option>Fleuriste</option>
+                <option>Lieu de réception</option>
+                <option>Wedding planner</option>
+                <option>Pâtissier</option>
+                <option>Décorateur</option>
+                <option>Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="pro-department">Département d'activité</label>
+              <select id="pro-department" name="department">
+                <option value="">Sélectionner…</option>
+                <option>01 – Ain</option>
+                <option>02 – Aisne</option>
+                <option>03 – Allier</option>
+                <option>04 – Alpes-de-Haute-Provence</option>
+                <option>05 – Hautes-Alpes</option>
+                <option>06 – Alpes-Maritimes</option>
+                <option>07 – Ardèche</option>
+                <option>08 – Ardennes</option>
+                <option>09 – Ariège</option>
+                <option>10 – Aube</option>
+                <option>11 – Aude</option>
+                <option>12 – Aveyron</option>
+                <option>13 – Bouches-du-Rhône</option>
+                <option>14 – Calvados</option>
+                <option>15 – Cantal</option>
+                <option>16 – Charente</option>
+                <option>17 – Charente-Maritime</option>
+                <option>18 – Cher</option>
+                <option>19 – Corrèze</option>
+                <option>2A – Corse-du-Sud</option>
+                <option>2B – Haute-Corse</option>
+                <option>21 – Côte-d'Or</option>
+                <option>22 – Côtes-d'Armor</option>
+                <option>23 – Creuse</option>
+                <option>24 – Dordogne</option>
+                <option>25 – Doubs</option>
+                <option>26 – Drôme</option>
+                <option>27 – Eure</option>
+                <option>28 – Eure-et-Loir</option>
+                <option>29 – Finistère</option>
+                <option>30 – Gard</option>
+                <option>31 – Haute-Garonne</option>
+                <option>32 – Gers</option>
+                <option>33 – Gironde</option>
+                <option>34 – Hérault</option>
+                <option>35 – Ille-et-Vilaine</option>
+                <option>36 – Indre</option>
+                <option>37 – Indre-et-Loire</option>
+                <option>38 – Isère</option>
+                <option>39 – Jura</option>
+                <option>40 – Landes</option>
+                <option>41 – Loir-et-Cher</option>
+                <option>42 – Loire</option>
+                <option>43 – Haute-Loire</option>
+                <option>44 – Loire-Atlantique</option>
+                <option>45 – Loiret</option>
+                <option>46 – Lot</option>
+                <option>47 – Lot-et-Garonne</option>
+                <option>48 – Lozère</option>
+                <option>49 – Maine-et-Loire</option>
+                <option>50 – Manche</option>
+                <option>51 – Marne</option>
+                <option>52 – Haute-Marne</option>
+                <option>53 – Mayenne</option>
+                <option>54 – Meurthe-et-Moselle</option>
+                <option>55 – Meuse</option>
+                <option>56 – Morbihan</option>
+                <option>57 – Moselle</option>
+                <option>58 – Nièvre</option>
+                <option>59 – Nord</option>
+                <option>60 – Oise</option>
+                <option>61 – Orne</option>
+                <option>62 – Pas-de-Calais</option>
+                <option>63 – Puy-de-Dôme</option>
+                <option>64 – Pyrénées-Atlantiques</option>
+                <option>65 – Hautes-Pyrénées</option>
+                <option>66 – Pyrénées-Orientales</option>
+                <option>67 – Bas-Rhin</option>
+                <option>68 – Haut-Rhin</option>
+                <option>69 – Rhône</option>
+                <option>70 – Haute-Saône</option>
+                <option>71 – Saône-et-Loire</option>
+                <option>72 – Sarthe</option>
+                <option>73 – Savoie</option>
+                <option>74 – Haute-Savoie</option>
+                <option>75 – Paris</option>
+                <option>76 – Seine-Maritime</option>
+                <option>77 – Seine-et-Marne</option>
+                <option>78 – Yvelines</option>
+                <option>79 – Deux-Sèvres</option>
+                <option>80 – Somme</option>
+                <option>81 – Tarn</option>
+                <option>82 – Tarn-et-Garonne</option>
+                <option>83 – Var</option>
+                <option>84 – Vaucluse</option>
+                <option>85 – Vendée</option>
+                <option>86 – Vienne</option>
+                <option>87 – Haute-Vienne</option>
+                <option>88 – Vosges</option>
+                <option>89 – Yonne</option>
+                <option>90 – Territoire de Belfort</option>
+                <option>91 – Essonne</option>
+                <option>92 – Hauts-de-Seine</option>
+                <option>93 – Seine-Saint-Denis</option>
+                <option>94 – Val-de-Marne</option>
+                <option>95 – Val-d'Oise</option>
+                <option>971 – Guadeloupe</option>
+                <option>972 – Martinique</option>
+                <option>973 – Guyane</option>
+                <option>974 – La Réunion</option>
+                <option>976 – Mayotte</option>
+              </select>
+            </div>
+          </div>
+          <fieldset class="field field-events">
+            <legend>Événements que vous couvrez <span class="field-hint">(plusieurs choix possibles)</span></legend>
+            <div class="checks">
+              <label class="check"><input type="checkbox" id="pro-event-mariage" value="Mariage"> Mariage</label>
+              <label class="check"><input type="checkbox" id="pro-event-bapteme" value="Baptême & communion"> Baptême &amp; communion</label>
+              <label class="check"><input type="checkbox" id="pro-event-anniversaire" value="Anniversaire"> Anniversaire</label>
+              <label class="check"><input type="checkbox" id="pro-event-soiree" value="Soirée entre proches"> Soirée entre proches</label>
+            </div>
+          </fieldset>
+          <fieldset class="field field-events">
+            <legend>Livraison</legend>
+            <div class="checks">
+              <label class="check"><input type="radio" name="pro-delivery" id="pro-delivery-yes" value="Oui"> Oui</label>
+              <label class="check"><input type="radio" name="pro-delivery" id="pro-delivery-no" value="Non"> Non</label>
+            </div>
+          </fieldset>
+          <div class="field">
+            <label for="pro-portfolio">Photos &amp; vidéos de votre travail</label>
+            <input id="pro-portfolio" name="portfolio" type="url" placeholder="Lien Instagram, Google Drive, site web…">
+            <p class="field-note">Un lien suffit pour l'instant — nous recherchons des visuels de qualité qui représentent bien votre travail ; vous pourrez aussi nous en envoyer directement une fois inscrit·e.</p>
+          </div>
+          <button class="btn btn-primary btn-block" type="submit">Rejoindre la liste</button>
+          <p class="form-status" id="status-pro" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span class="brand">Fetify</span>
+    <span>Le carnet d'adresses des grands jours — lancement à venir.</span>
+    <span>&copy; 2026 Fetify</span>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var tabClient = document.getElementById('tab-client');
+    var tabPro = document.getElementById('tab-pro');
+    var panelClient = document.getElementById('panel-client');
+    var panelPro = document.getElementById('panel-pro');
+
+    function showTab(which){
+      var clientActive = which === 'client';
+      tabClient.setAttribute('aria-selected', String(clientActive));
+      tabPro.setAttribute('aria-selected', String(!clientActive));
+      panelClient.hidden = !clientActive;
+      panelPro.hidden = clientActive;
+    }
+    tabClient.addEventListener('click', function(){ showTab('client'); });
+    tabPro.addEventListener('click', function(){ showTab('pro'); });
+
+    async function getDb(){
+      try{
+        if (window.claude && typeof window.claude.use === 'function'){
+          return await window.claude.use('db');
+        }
+      }catch(e){}
+      return null;
+    }
+
+    function wireForm(formEl, statusEl, kind, fields, checkboxGroup, radioGroup){
+      formEl.addEventListener('submit', async function(evt){
+        evt.preventDefault();
+        var data = {};
+        fields.forEach(function(id){
+          var el = document.getElementById(id);
+          data[el.name] = el.value.trim();
+        });
+        if (checkboxGroup){
+          data[checkboxGroup.name] = checkboxGroup.ids
+            .map(function(id){ return document.getElementById(id); })
+            .filter(function(el){ return el.checked; })
+            .map(function(el){ return el.value; });
+        }
+        if (radioGroup){
+          var checkedRadio = formEl.querySelector('input[name="' + radioGroup.groupName + '"]:checked');
+          data[radioGroup.name] = checkedRadio ? checkedRadio.value : '';
+        }
+        if (kind === 'client'){
+          if (!data.firstName || !data.lastName || !data.email || !data.phone){
+            statusEl.textContent = 'Merci de renseigner votre nom, prénom, email et téléphone.';
+            return;
+          }
+        } else if (!data.name || !data.email){
+          statusEl.textContent = 'Merci de renseigner au moins votre prénom et votre email.';
+          return;
+        }
+        statusEl.textContent = 'Envoi en cours…';
+        var db = await getDb();
+        if (!db){
+          statusEl.innerHTML = 'Inscription momentanément indisponible ici — écrivez-nous à <a href="mailto:bonjour@fetify.fr">bonjour@fetify.fr</a>.';
+          return;
+        }
+        try{
+          await db.collection('signups').add(Object.assign({ kind: kind, createdAt: new Date().toISOString() }, data));
+          formEl.querySelectorAll('input, select, button').forEach(function(el){ el.disabled = true; });
+          var thanksMsg = kind === 'prestataire'
+            ? 'Merci, ' + (data.name || '') + '. Votre profil est en cours d\'examen — on vous recontacte dès sa validation.'
+            : 'Merci, ' + (data.firstName || '') + '. Vous êtes sur la liste.';
+          statusEl.innerHTML = '<span class="thanks">' + thanksMsg + '</span>';
+        }catch(e){
+          statusEl.textContent = "Un souci est survenu, réessayez dans un instant.";
+        }
+      });
+    }
+
+    wireForm(panelClient, document.getElementById('status-client'), 'client', ['client-first-name','client-last-name','client-email','client-phone','client-postal','client-event','client-venue','client-guests']);
+    wireForm(panelPro, document.getElementById('status-pro'), 'prestataire', ['pro-name','pro-email','pro-job','pro-department','pro-portfolio'], {
+      name: 'events',
+      ids: ['pro-event-mariage','pro-event-bapteme','pro-event-anniversaire','pro-event-soiree']
+    }, { name: 'delivery', groupName: 'pro-delivery' });
+  })();
+</script>
