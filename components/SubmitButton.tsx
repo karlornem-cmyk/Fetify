@@ -1,0 +1,20 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
+
+export function SubmitButton({
+  children,
+  pendingLabel = "Envoi en cours…",
+  className = "btn btn-primary btn-block",
+}: {
+  children: React.ReactNode;
+  pendingLabel?: string;
+  className?: string;
+}) {
+  const { pending } = useFormStatus();
+  return (
+    <button className={className} type="submit" disabled={pending}>
+      {pending ? pendingLabel : children}
+    </button>
+  );
+}
